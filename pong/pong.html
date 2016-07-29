@@ -49,10 +49,13 @@
       createMovement();
       buildGameCanvas();
     }, 1000/fps);
-    gc.addEventListener("mousemove", function(evt){
-      var mouseLocation = mousePosition(evt);
-      paddle_player_one_Y = mouseLocation.y;
-    });
+    // gc.addEventListener("mousemove", function(evt){
+    //   // console.log(paddle_player_one_Y);
+    //   console.log(evt);
+    //   var mouseLocation = mousePosition(evt);
+    //   paddle_player_one_Y = mouseLocation.screenY;
+    //
+    // });
   }
 
 
