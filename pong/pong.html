@@ -3,16 +3,97 @@
 <head>
   <title>Pong Game</title>
   <style>
-
+    /*#wrapper{width:800px; height:auto; margin:0px auto;}*/
+    #game_canvas{width:800px; height:800px; padding-right:5px;}
   </style>
 </head>
 <body>
-  <canvas></canvas>
+    <h2>Pong Game<h2>
+    <canvas id="game_canvas"></canvas>
   <script>
-  window.onload = function(){
-    console.log("Hello World");
-  };
 
+  var gameCanvas, gameCanvasContext, gc, gcc;
+  var ball_xCoord = 15;
+  var ball_xSpeed = 15;
+  var ball_yCoord = 10;
+  var ball_ySpeed = 4;
+  var paddle_player_one_X = 250;
+  var paddle_player_one_Y = 250;
+  var paddle_player_two_X = 250;
+  var paddle_player_two_Y = 250;
+  const PADDLE_HEIGHT = 100;
+
+  function mousePosition(evt){
+    var rect = gc.getBoundingClientRect();
+    var root = document.documentElement;
+    var mouseX_Coord = evt.clientX - rect.left - root.scrollLeft;
+    var mouseY_Coord = evt.clientY - rect.top - root.scrolltop;
+    return{
+      x:mouseX_Coord,
+      y:mouseY_Coord
+    };
+  }
+
+  window.onload = function(){
+    console.log("Window has loaded!!!");
+    gameCanvas = document.getElementById("game_canvas");
+    gc = gameCanvas;
+    console.log(gc);
+    gc.width = 800;
+    gc.height = 800;
+    gameCanvasContext = gc.getContext("2d");
+    gcc = gameCanvasContext;
+    console.log(gcc);
+    var fps = 20;
+    setInterval(function(){
+      createMovement();
+      buildGameCanvas();
+    }, 1000/fps);
+    gc.addEventListener("mousemove", function(evt){
+      var mouseLocation = mousePosition(evt);
+      paddle_player_one_Y = mouseLocation.y;
+    });
+  }
+
+
+  function createMovement(){
+    console.log("Width: " + gc.width);
+    console.log("Height: " + gc.height);
+    ball_xCoord = ball_xCoord + ball_xSpeed;
+    console.log(ball_xCoord);
+    if(ball_xCoord > gc.width || ball_xCoord < 0){
+      ball_xSpeed = -ball_xSpeed;
+    }
+    ball_yCoord = ball_yCoord + ball_ySpeed;
+    console.log(ball_yCoord);
+    if(ball_yCoord > gc.height || ball_yCoord < 0){
+      ball_ySpeed = -ball_ySpeed;
+    }
+  }
+
+  function buildGameCanvas(){
+    console.log("Build Canvas");
+    //This is Black background
+    buildRectangle(0,0,gc.width,gc.height,"#000000");
+    //This is Left Player's paddle
+    buildRectangle(1,paddle_player_one_Y,10,100,"#ffffff");
+    //This is Right Player's paddle
+    buildRectangle(789,210,10,100,"#ffffff");
+    //This is Ball
+    // buildRectangle(ball_xCoord,100,10,10,"#ff0000");
+    buildCircle(ball_xCoord, ball_xCoord, 10, "#ffffff");
+  }
+  function buildCircle(centerX_Coord, centerY_Coord, radius, fillColor){
+    gcc.fillStyle = fillColor;
+    gcc.beginPath();
+    gcc.arc(centerX_Coord,centerY_Coord,radius,0,Math.PI*2,true);
+    gcc.fill();
+  }
+
+  function buildRectangle(leftX_Coord, topY_Coord, width, height, fillColor){
+    gcc.fillStyle = fillColor;
+    gcc.fillRect(leftX_Coord, topY_Coord, width, height);
+  }
   </script>
 </body>
 </html>
